@@ -17,6 +17,7 @@ class DiaryService extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = jsonEncode(diaryDB.map((e) => e.toJson()).toList());
     await prefs.setString('diaryDB', jsonString);
+    notifyListeners();
   }
 
   Future<void> loadData() async {
@@ -48,8 +49,6 @@ class DiaryService extends ChangeNotifier {
       diaryDB.add(DayDiaries([newDiary], date, 1));
     }
 
-    notifyListeners();
-
     saveData();
   }
 
@@ -58,8 +57,6 @@ class DiaryService extends ChangeNotifier {
 
     diary.content = newContent;
     diary.writingTime = now;
-
-    notifyListeners();
 
     saveData();
   }
@@ -80,8 +77,6 @@ class DiaryService extends ChangeNotifier {
     } else {
       diaryDB.remove(DayDiaries([diary], date, 1));
     }
-
-    notifyListeners();
 
     saveData();
   }
